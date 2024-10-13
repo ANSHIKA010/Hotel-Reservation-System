@@ -47,13 +47,13 @@ public class Main {
                     case 4:
                         updateReservation(connection, scanner);
                         break;
-//                    case 5:
-//                        deleteReservation(connection, scanner);
-//                        break;
-//                    case 0:
-//                        exit();
-//                        scanner.close();
-//                        return;
+                    case 5:
+                        deleteReservation(connection, scanner);
+                        break;
+                    case 0:
+                        exit();
+                        scanner.close();
+                        return;
                     default:
                         System.out.println("Invalid choice. Try again.");
                 }
@@ -62,6 +62,9 @@ public class Main {
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+        }
+        catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -128,7 +131,7 @@ public class Main {
             System.out.print("Enter guest name: ");
             String guestName = scanner.next();
 
-            String sql = "SELECT room_number FROM reservations " +
+            String sql = "SELECT room_number FROM reservation " +
                     "WHERE reservation_id = " + reservationId +
                     " AND guest_name = '" + guestName + "'";
 
@@ -166,7 +169,7 @@ public class Main {
             System.out.print("Enter new contact number: ");
             String newContactNumber = scanner.next();
 
-            String sql = "UPDATE reservations SET guest_name = '" + newGuestName + "', " +
+            String sql = "UPDATE reservation SET guest_name = '" + newGuestName + "', " +
                     "room_number = " + newRoomNumber + ", " +
                     "contact_number = '" + newContactNumber + "' " +
                     "WHERE reservation_id = " + reservationId;
@@ -186,7 +189,7 @@ public class Main {
     }
     private static boolean reservationExists(Connection connection, int reservationId) {
         try {
-            String sql = "SELECT reservation_id FROM reservations WHERE reservation_id = " + reservationId;
+            String sql = "SELECT reservation_id FROM reservation WHERE reservation_id = " + reservationId;
 
             try (Statement statement = connection.createStatement();
                  ResultSet resultSet = statement.executeQuery(sql)) {
@@ -199,6 +202,40 @@ public class Main {
         }
     }
 
+    private static void deleteReservation(Connection connection, Scanner scanner) {
+        try {
+            System.out.print("Enter reservation ID to delete: ");
+            int reservationId = scanner.nextInt();
 
+            if (!reservationExists(connection, reservationId)) {
+                System.out.println("Reservation not found for the given ID.");
+                return;
+            }
 
+            String sql = "DELETE FROM reservation WHERE reservation_id = " + reservationId;
+
+            try (Statement statement = connection.createStatement()) {
+                int affectedRows = statement.executeUpdate(sql);
+
+                if (affectedRows > 0) {
+                    System.out.println("Reservation deleted successfully!");
+                } else {
+                    System.out.println("Reservation deletion failed.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void exit() throws InterruptedException {
+        System.out.print("Exiting System");
+        int i = 5;
+        while(i!=0){
+            System.out.print(".");
+            Thread.sleep(1000);
+            i--;
+        }
+        System.out.println();
+        System.out.println("ThankYou For Using Hotel Reservation System!!!");
+    }
     }
