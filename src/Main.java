@@ -1,3 +1,5 @@
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Connection;
@@ -6,9 +8,11 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 public class Main {
 
-    private static final String url = "jdbc:mysql://localhost:3306/hotel_db";
-    private static final String username = "root";
-    private static final String password = "AnshikaSql123";
+    private static Dotenv env = Dotenv.load();
+
+    private static final String url = env.get("DB_LINK");
+    private static final String username = env.get("DB_USER");
+    private static final String password = env.get("DB_PASSWORD");
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException{
 
@@ -28,8 +32,8 @@ public class Main {
                 System.out.println("1. Reserve a room");
                 System.out.println("2. View Reservations");
                 System.out.println("3. Get Room Number");
-                System.out.println("4. Update Reservations");
-                System.out.println("5. Delete Reservations");
+                System.out.println("4. Update Reservation");
+                System.out.println("5. Delete Reservation");
                 System.out.println("0. Exit");
                 System.out.print("Choose an option: ");
                 int choice = scanner.nextInt();
