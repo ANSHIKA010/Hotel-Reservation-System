@@ -3,6 +3,7 @@ A Hotel Reservation System designed in Java to streamline the process of room re
 The system allows users to reserve rooms, view current reservations, update bookings, and delete reservations through a console-based interface. 
 The project integrates a MySQL database for storing and managing reservation data, utilizing JDBC for database connectivity.
 
+
 ## Features
 - **Reserve a Room:** Users can book a room by providing guest details, room number, and contact information.
 - **View Reservations:** Display all existing reservations with details like reservation ID, guest name, room number, and reservation date.
